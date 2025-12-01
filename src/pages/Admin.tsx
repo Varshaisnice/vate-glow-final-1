@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Trash2, Search, Settings } from "lucide-react";
+import { Plus, Trash2, Search, Settings, Database } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
@@ -45,6 +45,7 @@ export default function Admin() {
 
   const createProduct = useMutation(api.products.create);
   const deleteProduct = useMutation(api.products.remove);
+  const seedProducts = useMutation(api.seed.seedProducts);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +78,18 @@ export default function Admin() {
     }
   };
 
+  const handleSeed = async () => {
+    if (confirm("This will clear all existing products and add sample data. Continue?")) {
+      try {
+        await seedProducts();
+        toast.success("Database seeded successfully");
+      } catch (error) {
+        toast.error("Failed to seed database");
+        console.error(error);
+      }
+    }
+  };
+
   const handleDelete = async (id: any) => {
     if (confirm("Are you sure you want to delete this product?")) {
       try {
@@ -97,100 +110,111 @@ export default function Admin() {
           </div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="rounded-full w-full md:w-auto">
-              <Plus className="mr-2 h-4 w-4" /> Add Product
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Add New Product</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Name</label>
-                  <Input 
-                    required 
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Brand</label>
-                  <Input 
-                    required 
-                    value={formData.brand}
-                    onChange={(e) => setFormData({...formData, brand: e.target.value})}
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
-                <Textarea 
-                  required 
-                  value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                />
-              </div>
+        
+        <div className="flex gap-3 w-full md:w-auto">
+          <Button 
+            variant="outline" 
+            onClick={handleSeed}
+            className="rounded-full flex-1 md:flex-none"
+          >
+            <Database className="mr-2 h-4 w-4" /> Seed Data
+          </Button>
 
-              <div className="grid grid-cols-3 gap-4">
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-full flex-1 md:flex-none">
+                <Plus className="mr-2 h-4 w-4" /> Add Product
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Add New Product</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCreate} className="space-y-4 mt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Name</label>
+                    <Input 
+                      required 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Brand</label>
+                    <Input 
+                      required 
+                      value={formData.brand}
+                      onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                    />
+                  </div>
+                </div>
+                
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Price (₹)</label>
-                  <Input 
-                    type="number" 
+                  <label className="text-sm font-medium">Description</label>
+                  <Textarea 
                     required 
-                    value={formData.price}
-                    onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Price (₹)</label>
+                    <Input 
+                      type="number" 
+                      required 
+                      value={formData.price}
+                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Stock</label>
+                    <Input 
+                      type="number" 
+                      required 
+                      value={formData.stock}
+                      onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Category</label>
+                    <select 
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      value={formData.category}
+                      onChange={(e) => setFormData({...formData, category: e.target.value})}
+                    >
+                      {["Eyes", "Lips", "Face", "Skincare", "Nails", "Accessories"].map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Image URL 1</label>
+                  <Input 
+                    required 
+                    value={formData.image1}
+                    onChange={(e) => setFormData({...formData, image1: e.target.value})}
+                    placeholder="https://..."
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Stock</label>
+                  <label className="text-sm font-medium">Image URL 2 (Optional)</label>
                   <Input 
-                    type="number" 
-                    required 
-                    value={formData.stock}
-                    onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                    value={formData.image2}
+                    onChange={(e) => setFormData({...formData, image2: e.target.value})}
+                    placeholder="https://..."
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Category</label>
-                  <select 
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  >
-                    {["Eyes", "Lips", "Face", "Skincare", "Nails", "Accessories"].map(c => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Image URL 1</label>
-                <Input 
-                  required 
-                  value={formData.image1}
-                  onChange={(e) => setFormData({...formData, image1: e.target.value})}
-                  placeholder="https://..."
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Image URL 2 (Optional)</label>
-                <Input 
-                  value={formData.image2}
-                  onChange={(e) => setFormData({...formData, image2: e.target.value})}
-                  placeholder="https://..."
-                />
-              </div>
-
-              <Button type="submit" className="w-full rounded-full mt-4">Create Product</Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+                <Button type="submit" className="w-full rounded-full mt-4">Create Product</Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <div className="flex items-center mb-6">
