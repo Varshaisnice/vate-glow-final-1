@@ -56,7 +56,7 @@ export const seedProducts = mutation({
         const nameBase = names[i % names.length];
         const name = i < names.length ? nameBase : `${nameBase} ${i + 1}`;
         const brand = BRANDS[Math.floor(Math.random() * BRANDS.length)];
-        const price = Math.floor(Math.random() * 50) + 10;
+        const price = (Math.floor(Math.random() * 50) + 10) * 85; // Convert roughly to INR
         const stock = Math.floor(Math.random() * 100);
         const images = IMAGES[category as keyof typeof IMAGES] || [];
         

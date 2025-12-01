@@ -77,7 +77,7 @@ export default function Profile() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold">${order.total.toFixed(2)}</p>
+                        <p className="font-bold">₹{order.total.toFixed(2)}</p>
                         <span className="inline-block px-2 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold">
                           {order.status}
                         </span>
@@ -124,7 +124,7 @@ export default function Profile() {
                       </div>
                       <div className="p-4">
                         <h3 className="font-bold truncate mb-1">{product.name}</h3>
-                        <p className="text-primary font-bold">${product.price}</p>
+                        <p className="text-primary font-bold">₹{product.price}</p>
                         <Button
                           variant="ghost"
                           size="icon"

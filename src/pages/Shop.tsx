@@ -57,10 +57,10 @@ export default function Shop() {
           
           <div>
             <h3 className="font-bold mb-4">Price Range</h3>
-            <Slider defaultValue={[0, 100]} max={100} step={1} className="mb-2" />
+            <Slider defaultValue={[0, 5000]} max={5000} step={100} className="mb-2" />
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>$0</span>
-              <span>$100+</span>
+              <span>₹0</span>
+              <span>₹5000+</span>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function Shop() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <span className="font-bold text-lg">${product.price}</span>
+                      <span className="font-bold text-lg">₹{product.price}</span>
                       <Button size="sm" variant="secondary" className="rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                         Add to Cart
                       </Button>

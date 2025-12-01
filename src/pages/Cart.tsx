@@ -13,7 +13,7 @@ export default function Cart() {
   const removeFromCart = useMutation(api.cart.removeFromCart);
 
   const subtotal = cartItems?.reduce((acc, item) => acc + (item.product?.price || 0) * item.quantity, 0) || 0;
-  const shipping = subtotal > 50 ? 0 : 10;
+  const shipping = subtotal > 999 ? 0 : 99;
   const total = subtotal + shipping;
 
   const handleUpdateQuantity = async (id: any, quantity: number) => {
@@ -83,7 +83,7 @@ export default function Cart() {
                       <p className="text-sm text-primary font-medium">{item.product?.brand}</p>
                       <h3 className="font-bold text-lg">{item.product?.name}</h3>
                     </div>
-                    <p className="font-bold text-lg">${(item.product?.price || 0) * item.quantity}</p>
+                    <p className="font-bold text-lg">₹{(item.product?.price || 0) * item.quantity}</p>
                   </div>
                   
                   <div className="flex justify-between items-center mt-4">
@@ -131,15 +131,15 @@ export default function Cart() {
             <div className="space-y-4 mb-6">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-muted-foreground">
                 <span>Shipping</span>
-                <span>{shipping === 0 ? "Free" : `${shipping.toFixed(2)}`}</span>
+                <span>{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
               </div>
               <div className="border-t border-white/10 pt-4 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
 
@@ -151,7 +151,7 @@ export default function Cart() {
             </Button>
             
             <p className="text-xs text-center text-muted-foreground mt-4">
-              Free shipping on orders over $50
+              Free shipping on orders over ₹999
             </p>
           </div>
         </div>

@@ -94,7 +94,7 @@ export default function Landing() {
                     </div>
                   </div>
                   <div className="flex justify-between items-center mt-4">
-                    <span className="font-bold text-lg">${product.price}</span>
+                    <span className="font-bold text-lg">₹{product.price}</span>
                     <Button size="sm" variant="secondary" className="rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                       View
                     </Button>

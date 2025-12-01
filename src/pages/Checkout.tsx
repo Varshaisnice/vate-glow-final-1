@@ -16,7 +16,7 @@ export default function Checkout() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const subtotal = cartItems?.reduce((acc, item) => acc + (item.product?.price || 0) * item.quantity, 0) || 0;
-  const shipping = subtotal > 50 ? 0 : 10;
+  const shipping = subtotal > 999 ? 0 : 99;
   const total = subtotal + shipping;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -103,7 +103,7 @@ export default function Checkout() {
                     <span className="text-muted-foreground">
                       {item.quantity}x {item.product?.name}
                     </span>
-                    <span>${((item.product?.price || 0) * item.quantity).toFixed(2)}</span>
+                    <span>₹{((item.product?.price || 0) * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -111,15 +111,15 @@ export default function Checkout() {
               <div className="border-t border-white/10 pt-4 space-y-2">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : `${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between font-bold text-lg pt-2 border-t border-white/10">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>₹{total.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -135,7 +135,7 @@ export default function Checkout() {
                     Processing...
                   </>
                 ) : (
-                  `Pay ${total.toFixed(2)}`
+                  `Pay ₹${total.toFixed(2)}`
                 )}
               </Button>
             </CardContent>

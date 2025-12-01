@@ -104,7 +104,7 @@ export default function ProductDetail() {
                 </span>
               )}
             </div>
-            <p className="text-3xl font-bold">${product.price}</p>
+            <p className="text-3xl font-bold">₹{product.price}</p>
           </div>
 
           <div className="prose prose-invert max-w-none text-muted-foreground">
@@ -183,7 +183,7 @@ export default function ProductDetail() {
                 <div className="p-4">
                   <p className="text-xs text-primary font-medium mb-1">{p.brand}</p>
                   <h3 className="font-bold truncate">{p.name}</h3>
-                  <p className="mt-2 font-bold">${p.price}</p>
+                  <p className="mt-2 font-bold">₹{p.price}</p>
                 </div>
               </motion.div>
             ))}
