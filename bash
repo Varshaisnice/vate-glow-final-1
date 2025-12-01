@@ -1,1 +1,2 @@
-npx convex run seed:seedProducts
+    npm run dev
+    
