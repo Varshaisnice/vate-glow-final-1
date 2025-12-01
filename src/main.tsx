@@ -11,10 +11,16 @@ import "./index.css";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import "./types/global.d.ts";
+import { Layout } from "@/components/Layout";
+import Shop from "@/pages/Shop";
+import ProductDetail from "@/pages/ProductDetail";
+import Cart from "@/pages/Cart";
+import Checkout from "@/pages/Checkout";
+import Profile from "@/pages/Profile";
+import Lookbook from "@/pages/Lookbook";
+import About from "@/pages/About";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
-
 
 function RouteSyncer() {
   const location = useLocation();
@@ -39,7 +45,6 @@ function RouteSyncer() {
   return null;
 }
 
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <VlyToolbar />
@@ -48,8 +53,17 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <RouteSyncer />
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} /> {/* TODO: change redirect after auth to correct page */}
+            <Route element={<Layout />}>
+              <Route path="/" element={<Landing />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/lookbook" element={<Lookbook />} />
+              <Route path="/about" element={<About />} />
+            </Route>
+            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -30,14 +30,73 @@ const schema = defineSchema(
       isAnonymous: v.optional(v.boolean()), // is the user anonymous. do not remove
 
       role: v.optional(roleValidator), // role of the user. do not remove
+      username: v.optional(v.string()),
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    products: defineTable({
+      name: v.string(),
+      description: v.string(),
+      price: v.number(),
+      category: v.string(),
+      brand: v.string(),
+      skinType: v.optional(v.string()),
+      images: v.array(v.string()),
+      rating: v.number(),
+      reviewCount: v.number(),
+      ingredients: v.optional(v.string()),
+      stock: v.number(),
+      isSoldOut: v.boolean(),
+    })
+      .index("by_category", ["category"])
+      .index("by_brand", ["brand"])
+      .searchIndex("search_name", {
+        searchField: "name",
+        filterFields: ["category", "brand"],
+      }),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    cartItems: defineTable({
+      userId: v.id("users"),
+      productId: v.id("products"),
+      quantity: v.number(),
+    }).index("by_user", ["userId"]),
+
+    wishlistItems: defineTable({
+      userId: v.id("users"),
+      productId: v.id("products"),
+    })
+      .index("by_user_product", ["userId", "productId"])
+      .index("by_user", ["userId"]),
+
+    orders: defineTable({
+      userId: v.id("users"),
+      items: v.array(
+        v.object({
+          productId: v.id("products"),
+          name: v.string(),
+          price: v.number(),
+          quantity: v.number(),
+          image: v.string(),
+        })
+      ),
+      total: v.number(),
+      status: v.string(),
+      shippingAddress: v.object({
+        fullName: v.string(),
+        address: v.string(),
+        city: v.string(),
+        postalCode: v.string(),
+        country: v.string(),
+      }),
+      paymentStatus: v.string(),
+    }).index("by_user", ["userId"]),
+
+    reviews: defineTable({
+      productId: v.id("products"),
+      userId: v.id("users"),
+      userName: v.string(),
+      rating: v.number(),
+      comment: v.string(),
+    }).index("by_product", ["productId"]),
   },
   {
     schemaValidation: false,
