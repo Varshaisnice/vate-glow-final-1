@@ -89,8 +89,8 @@ export default function Admin() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-primary/10 rounded-full">
             <Settings className="w-6 h-6 text-primary" />
@@ -99,7 +99,7 @@ export default function Admin() {
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-full">
+            <Button className="rounded-full w-full md:w-auto">
               <Plus className="mr-2 h-4 w-4" /> Add Product
             </Button>
           </DialogTrigger>

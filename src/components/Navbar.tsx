@@ -24,14 +24,29 @@ export function Navbar() {
     }
   };
 
+  if (!isHome) {
+    return (
+      <div className="fixed top-4 left-4 z-50">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={() => navigate(-1)} 
+          className="rounded-full bg-background/50 backdrop-blur-md border-white/10 hover:bg-primary/20 shadow-lg"
+          title="Go Back"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
       <nav className="w-full max-w-5xl rounded-full border border-white/20 bg-background/70 backdrop-blur-xl shadow-lg">
         <div className="px-6 h-16 flex items-center justify-between">
-          {/* Left Section: Mobile Menu, Back Button, Logo */}
+          {/* Left Section: Mobile Menu & Logo */}
           <div className="flex items-center gap-2 md:gap-4">
             {/* Mobile Menu */}
-            {isHome && (
             <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
@@ -58,20 +73,6 @@ export function Navbar() {
                 </SheetContent>
               </Sheet>
             </div>
-            )}
-
-            {/* Back Button */}
-            {!isHome && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => navigate(-1)} 
-                className="hover:bg-primary/10 rounded-full"
-                title="Go Back"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            )}
 
             {/* Logo */}
             <Link to="/" className="text-2xl font-bold tracking-tighter text-primary hover:opacity-80 transition-opacity">
@@ -80,7 +81,6 @@ export function Navbar() {
           </div>
 
           {/* Desktop Links */}
-          {isHome && (
           <div className="hidden md:flex items-center gap-8">
             <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
             <Link to="/shop" className="text-sm font-medium hover:text-primary transition-colors">Shop</Link>
@@ -88,7 +88,6 @@ export function Navbar() {
             <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
             <Link to="/admin" className="text-sm font-medium hover:text-primary transition-colors">Admin</Link>
           </div>
-          )}
 
           {/* Actions */}
           <div className="flex items-center gap-1">
