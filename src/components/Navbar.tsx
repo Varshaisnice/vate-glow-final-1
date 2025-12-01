@@ -16,6 +16,7 @@ export function Navbar() {
   const cartCount = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
   const [search, setSearch] = useState("");
   const isHome = location.pathname === "/";
+  const isAdmin = user?.email === "mvarsha4306@gmail.com";
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +68,9 @@ export function Navbar() {
                       <Link to="/shop?category=Face" className="text-lg hover:text-primary transition-colors">Face</Link>
                       <Link to="/lookbook" className="text-lg hover:text-primary transition-colors">Lookbook</Link>
                       <Link to="/about" className="text-lg hover:text-primary transition-colors">About Us</Link>
-                      <Link to="/admin" className="text-lg hover:text-primary transition-colors">Admin</Link>
+                      {isAdmin && (
+                        <Link to="/admin" className="text-lg hover:text-primary transition-colors">Admin</Link>
+                      )}
                     </div>
                   </div>
                 </SheetContent>
@@ -86,7 +89,9 @@ export function Navbar() {
             <Link to="/shop" className="text-sm font-medium hover:text-primary transition-colors">Shop</Link>
             <Link to="/lookbook" className="text-sm font-medium hover:text-primary transition-colors">Lookbook</Link>
             <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
-            <Link to="/admin" className="text-sm font-medium hover:text-primary transition-colors">Admin</Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-sm font-medium hover:text-primary transition-colors">Admin</Link>
+            )}
           </div>
 
           {/* Actions */}

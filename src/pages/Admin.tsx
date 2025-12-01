@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,31 @@ import {
 } from "@/components/ui/table";
 import { Plus, Trash2, Search, Settings, Database } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router";
 
 export default function Admin() {
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user || user.email !== "mvarsha4306@gmail.com") {
+        toast.error("Access denied. Admin only.");
+        navigate("/");
+      }
+    }
+  }, [user, isLoading, navigate]);
+
+  if (isLoading) {
+    return <div className="container mx-auto px-4 pt-24 text-center">Loading...</div>;
+  }
+
+  if (!user || user.email !== "mvarsha4306@gmail.com") {
+    return null;
+  }
   
   // Form state
   const [formData, setFormData] = useState({
