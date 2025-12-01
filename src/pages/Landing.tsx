@@ -2,12 +2,24 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 export default function Landing() {
   const navigate = useNavigate();
   const featuredProducts = useQuery(api.products.getFeatured);
+  const seedProducts = useMutation(api.seed.seedProducts);
+
+  const handleSeed = async () => {
+    try {
+      await seedProducts();
+      toast.success("Database seeded successfully! Refreshing...");
+    } catch (error) {
+      toast.error("Failed to seed database");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -62,7 +74,19 @@ export default function Landing() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {featuredProducts ? (
+          {featuredProducts === undefined ? (
+            // Skeletons
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[400px] bg-muted/20 rounded-xl animate-pulse" />
+            ))
+          ) : featuredProducts.length === 0 ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-center bg-card/40 rounded-xl border border-white/10">
+              <p className="text-muted-foreground mb-4">No products found in the database.</p>
+              <Button onClick={handleSeed} variant="default" className="rounded-full">
+                Seed Database with Sample Products
+              </Button>
+            </div>
+          ) : (
             featuredProducts.map((product) => (
               <motion.div 
                 key={product._id}
@@ -101,11 +125,6 @@ export default function Landing() {
                   </div>
                 </div>
               </motion.div>
-            ))
-          ) : (
-            // Skeletons
-            Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-[400px] bg-muted/20 rounded-xl animate-pulse" />
             ))
           )}
         </div>

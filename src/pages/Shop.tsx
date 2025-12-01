@@ -1,4 +1,4 @@
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router";
@@ -8,8 +8,9 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
-import { Star, Filter } from "lucide-react";
+import { Star, Filter, Database } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { toast } from "sonner";
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +23,18 @@ export default function Shop() {
     search,
     paginationOpts: { numItems: 20, cursor: null } 
   });
+
+  const seedProducts = useMutation(api.seed.seedProducts);
+
+  const handleSeed = async () => {
+    try {
+      await seedProducts();
+      toast.success("Database seeded successfully! Refreshing...");
+    } catch (error) {
+      toast.error("Failed to seed database");
+      console.error(error);
+    }
+  };
 
   const categories = ["Eyes", "Lips", "Face", "Skincare", "Nails", "Accessories"];
 
@@ -96,13 +109,37 @@ export default function Shop() {
 
         {/* Product Grid */}
         <div className="flex-1">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold">{category || "All Products"}</h1>
-            <p className="text-muted-foreground">{products?.page.length || 0} products found</p>
+          <div className="mb-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold">{category || "All Products"}</h1>
+              <p className="text-muted-foreground">{products?.page.length || 0} products found</p>
+            </div>
+            {products?.page.length === 0 && (
+               <Button onClick={handleSeed} variant="outline" size="sm">
+                 <Database className="mr-2 h-4 w-4" /> Seed Data
+               </Button>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products ? (
+            {products === undefined ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-[400px] bg-muted/20 rounded-xl animate-pulse" />
+              ))
+            ) : products.page.length === 0 ? (
+              <div className="col-span-full flex flex-col items-center justify-center py-20 text-center bg-card/40 rounded-xl border border-white/10">
+                <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-4">
+                  <Filter className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">No products found</h3>
+                <p className="text-muted-foreground mb-6 max-w-md">
+                  Try adjusting your filters or seed the database if it's empty.
+                </p>
+                <Button onClick={handleSeed} className="rounded-full">
+                  Seed Database
+                </Button>
+              </div>
+            ) : (
               products.page.map((product) => (
                 <motion.div 
                   key={product._id}
@@ -142,10 +179,6 @@ export default function Shop() {
                     </div>
                   </div>
                 </motion.div>
-              ))
-            ) : (
-              Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-[400px] bg-muted/20 rounded-xl animate-pulse" />
               ))
             )}
           </div>
