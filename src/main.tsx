@@ -21,6 +21,7 @@ import Lookbook from "@/pages/Lookbook";
 import About from "@/pages/About";
 import Wishlist from "@/pages/Wishlist";
 import Dashboard from "@/pages/Dashboard";
+import Admin from "@/pages/Admin";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -66,6 +67,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/lookbook" element={<Lookbook />} />
               <Route path="/about" element={<About />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<Admin />} />
             </Route>
             <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} />
             <Route path="*" element={<NotFound />} />

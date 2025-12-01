@@ -50,6 +50,7 @@ export function Navbar() {
                       <Link to="/shop?category=Face" className="text-lg hover:text-primary transition-colors">Face</Link>
                       <Link to="/lookbook" className="text-lg hover:text-primary transition-colors">Lookbook</Link>
                       <Link to="/about" className="text-lg hover:text-primary transition-colors">About Us</Link>
+                      <Link to="/admin" className="text-lg hover:text-primary transition-colors">Admin</Link>
                     </div>
                   </div>
                 </SheetContent>
@@ -81,7 +82,7 @@ export function Navbar() {
             <Link to="/shop" className="text-sm font-medium hover:text-primary transition-colors">Shop</Link>
             <Link to="/lookbook" className="text-sm font-medium hover:text-primary transition-colors">Lookbook</Link>
             <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">About</Link>
-            <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">Dashboard</Link>
+            <Link to="/admin" className="text-sm font-medium hover:text-primary transition-colors">Admin</Link>
           </div>
 
           {/* Actions */}
