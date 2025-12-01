@@ -52,7 +52,7 @@ export const seedProducts = mutation({
     for (const category of CATEGORIES) {
       const names = PRODUCT_NAMES[category as keyof typeof PRODUCT_NAMES] || [];
       
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 30; i++) {
         const nameBase = names[i % names.length];
         const name = i < names.length ? nameBase : `${nameBase} ${i + 1}`;
         const brand = BRANDS[Math.floor(Math.random() * BRANDS.length)];
