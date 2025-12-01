@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+            <h3 className="text-2xl font-bold text-primary mb-4">
               Vate Beauty
             </h3>
             <p className="text-muted-foreground text-sm leading-relaxed">

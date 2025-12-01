@@ -53,7 +53,7 @@ export function Navbar() {
           </div>
 
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+          <Link to="/" className="text-2xl font-bold tracking-tighter text-primary hover:opacity-80 transition-opacity">
             Vate Beauty
           </Link>
 
