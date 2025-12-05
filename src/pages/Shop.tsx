@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";

@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Minus, Plus, Star, ShoppingBag, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Id } from "@/convex/_generated/dataModel";
+import { Id } from "../../convex/_generated/dataModel";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function ProductDetail() {

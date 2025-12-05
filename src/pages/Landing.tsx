@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
 
 export default function Landing() {
