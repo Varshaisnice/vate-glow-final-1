@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth/core": "0.37.0",
     "@convex-dev/auth": "^0.0.86",
     "@faker-js/faker": "^9.8.0",
     "@hookform/resolvers": "^5.0.1",
@@ -50,7 +51,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "convex": "^1.27.0",
+    "convex": "^1.30.0",
     "crud": "link:convex-helpers/server/crud",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",

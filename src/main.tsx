@@ -23,11 +23,13 @@ import About from "@/pages/About";
 import Wishlist from "@/pages/Wishlist";
 import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
+import { api } from "../convex/_generated/api";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 // OPTIONAL: expose convex for debugging
 (window as any).convex = convex;
+(window as any).api = api;
 
 function RouteSyncer() {
   const location = useLocation();

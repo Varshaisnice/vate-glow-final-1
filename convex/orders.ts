@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getCurrentUser } from "./users";
+import { getCurrentUser } from "./authHelpers";
 
 export const createOrder = mutation({
   args: {

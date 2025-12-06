@@ -27,27 +27,9 @@ import { useNavigate } from "react-router";
 export default function Admin() {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
-  useEffect(() => {
-    if (!isLoading) {
-      if (!user || user.email !== "mvarsha4306@gmail.com") {
-        toast.error("Access denied. Admin only.");
-        navigate("/");
-      }
-    }
-  }, [user, isLoading, navigate]);
-
-  if (isLoading) {
-    return <div className="container mx-auto px-4 pt-24 text-center">Loading...</div>;
-  }
-
-  if (!user || user.email !== "mvarsha4306@gmail.com") {
-    return null;
-  }
-  
-  // Form state
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -59,14 +41,33 @@ export default function Admin() {
     image2: "",
   });
 
-  const products = useQuery(api.products.get, { 
+  const products = useQuery(api.products.get, {
     search: search || undefined,
-    paginationOpts: { numItems: 50, cursor: null } 
+    paginationOpts: { numItems: 50, cursor: null },
   });
 
   const createProduct = useMutation(api.products.create);
   const deleteProduct = useMutation(api.products.remove);
   const seedProducts = useMutation(api.seed.seedProducts);
+
+  useEffect(() => {
+    if (!isLoading && (!user || user.email !== "mvarsha4306@gmail.com")) {
+      toast.error("Access denied. Admin only.");
+      navigate("/");
+    }
+  }, [user, isLoading, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 pt-24 text-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user || user.email !== "mvarsha4306@gmail.com") {
+    return null;
+  }
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,7 +101,11 @@ export default function Admin() {
   };
 
   const handleSeed = async () => {
-    if (confirm("This will clear all existing products and add sample data. Continue?")) {
+    if (
+      confirm(
+        "This will clear all existing products and add sample data. Continue?"
+      )
+    ) {
       try {
         await seedProducts();
         toast.success("Database seeded successfully");
@@ -131,10 +136,10 @@ export default function Admin() {
           </div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         </div>
-        
+
         <div className="flex gap-3 w-full md:w-auto">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handleSeed}
             className="rounded-full flex-1 md:flex-none"
           >
@@ -155,59 +160,83 @@ export default function Admin() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Name</label>
-                    <Input 
-                      required 
+                    <Input
+                      required
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Brand</label>
-                    <Input 
-                      required 
+                    <Input
+                      required
                       value={formData.brand}
-                      onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, brand: e.target.value })
+                      }
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Description</label>
-                  <Textarea 
-                    required 
+                  <Textarea
+                    required
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        description: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Price (₹)</label>
-                    <Input 
-                      type="number" 
-                      required 
+                    <Input
+                      type="number"
+                      required
                       value={formData.price}
-                      onChange={(e) => setFormData({...formData, price: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, price: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Stock</label>
-                    <Input 
-                      type="number" 
-                      required 
+                    <Input
+                      type="number"
+                      required
                       value={formData.stock}
-                      onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, stock: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Category</label>
-                    <select 
+                    <select
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       value={formData.category}
-                      onChange={(e) => setFormData({...formData, category: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, category: e.target.value })
+                      }
                     >
-                      {["Eyes", "Lips", "Face", "Skincare", "Nails", "Accessories"].map(c => (
-                        <option key={c} value={c}>{c}</option>
+                      {[
+                        "Eyes",
+                        "Lips",
+                        "Face",
+                        "Skincare",
+                        "Nails",
+                        "Accessories",
+                      ].map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -215,23 +244,31 @@ export default function Admin() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Image URL 1</label>
-                  <Input 
-                    required 
+                  <Input
+                    required
                     value={formData.image1}
-                    onChange={(e) => setFormData({...formData, image1: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, image1: e.target.value })
+                    }
                     placeholder="https://..."
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Image URL 2 (Optional)</label>
-                  <Input 
+                  <label className="text-sm font-medium">
+                    Image URL 2 (Optional)
+                  </label>
+                  <Input
                     value={formData.image2}
-                    onChange={(e) => setFormData({...formData, image2: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, image2: e.target.value })
+                    }
                     placeholder="https://..."
                   />
                 </div>
 
-                <Button type="submit" className="w-full rounded-full mt-4">Create Product</Button>
+                <Button type="submit" className="w-full rounded-full mt-4">
+                  Create Product
+                </Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -241,8 +278,8 @@ export default function Admin() {
       <div className="flex items-center mb-6">
         <div className="relative max-w-sm w-full">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search products..." 
+          <Input
+            placeholder="Search products..."
             className="pl-10 rounded-full"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -265,10 +302,17 @@ export default function Admin() {
           </TableHeader>
           <TableBody>
             {products?.page.map((product) => (
-              <TableRow key={product._id} className="hover:bg-white/5 border-white/10">
+              <TableRow
+                key={product._id}
+                className="hover:bg-white/5 border-white/10"
+              >
                 <TableCell>
                   <div className="w-12 h-12 rounded bg-secondary/10 overflow-hidden">
-                    <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </TableCell>
                 <TableCell className="font-medium">{product.name}</TableCell>
@@ -276,14 +320,18 @@ export default function Admin() {
                 <TableCell>{product.category}</TableCell>
                 <TableCell>₹{product.price}</TableCell>
                 <TableCell>
-                  <span className={product.stock < 10 ? "text-destructive font-bold" : ""}>
+                  <span
+                    className={
+                      product.stock < 10 ? "text-destructive font-bold" : ""
+                    }
+                  >
                     {product.stock}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="text-destructive hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleDelete(product._id)}
                   >
